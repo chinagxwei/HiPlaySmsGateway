@@ -1,0 +1,69 @@
+2023-02-15 13:14:53 pid:1 Error: Class "Log" not found in D:\workspace\php\GatewayWorker\Applications\YourApp\Events.php:43
+Stack trace:
+#0 [internal function]: Events::onConnect()
+#1 D:\workspace\php\GatewayWorker\vendor\workerman\gateway-worker\src\BusinessWorker.php(403): call_user_func()
+#2 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Connection\TcpConnection.php(638): GatewayWorker\BusinessWorker->onGatewayMessage()
+#3 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Events\Select.php(295): Workerman\Connection\TcpConnection->baseRead()
+#4 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(2417): Workerman\Events\Select->loop()
+#5 D:\workspace\php\GatewayWorker\vendor\workerman\gateway-worker\src\BusinessWorker.php(197): Workerman\Worker->run()
+#6 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1416): GatewayWorker\BusinessWorker->run()
+#7 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1359): Workerman\Worker::forkWorkersForWindows()
+#8 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(549): Workerman\Worker::forkWorkers()
+#9 D:\workspace\php\GatewayWorker\Applications\YourApp\start_businessworker.php(35): Workerman\Worker::runAll()
+#10 {main}
+2023-02-15 13:18:00 pid:1 Register auth timeout (127.0.0.1). See http://doc2.workerman.net/register-auth-timeout.html
+2023-06-28 13:55:27 pid:1 Error: Call to undefined method handle\ChatRoomLobby::getMember() in D:\workspace\php\GatewayWorker\applications\src\Events.php:53
+Stack trace:
+#0 [internal function]: Events::onConnect('7f0000010b54000...')
+#1 D:\workspace\php\GatewayWorker\vendor\workerman\gateway-worker\src\BusinessWorker.php(380): call_user_func('Events::onConne...', '7f0000010b54000...')
+#2 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Connection\TcpConnection.php(646): GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Events\Select.php(311): Workerman\Connection\TcpConnection->baseRead(Resource id #36)
+#4 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1479): Workerman\Events\Select->loop()
+#5 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1399): Workerman\Worker::forkWorkersForWindows()
+#6 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(560): Workerman\Worker::forkWorkers()
+#7 D:\workspace\php\GatewayWorker\applications\src\start_businessworker.php(35): Workerman\Worker::runAll()
+#8 {main}
+2023-06-28 16:56:45 pid:1 Error: Call to undefined method handle\ChatRoomLobby::getMember() in D:\workspace\php\GatewayWorker\applications\src\Events.php:53
+Stack trace:
+#0 [internal function]: Events::onConnect('7f0000010b54000...')
+#1 D:\workspace\php\GatewayWorker\vendor\workerman\gateway-worker\src\BusinessWorker.php(380): call_user_func('Events::onConne...', '7f0000010b54000...')
+#2 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Connection\TcpConnection.php(646): GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Events\Select.php(311): Workerman\Connection\TcpConnection->baseRead(Resource id #36)
+#4 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1479): Workerman\Events\Select->loop()
+#5 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1399): Workerman\Worker::forkWorkersForWindows()
+#6 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(560): Workerman\Worker::forkWorkers()
+#7 D:\workspace\php\GatewayWorker\applications\src\start_businessworker.php(35): Workerman\Worker::runAll()
+#8 {main}
+2023-06-28 16:56:48 pid:1 Error: Call to undefined method handle\ChatRoomLobby::getMember() in D:\workspace\php\GatewayWorker\applications\src\Events.php:53
+Stack trace:
+#0 [internal function]: Events::onConnect('7f0000010b54000...')
+#1 D:\workspace\php\GatewayWorker\vendor\workerman\gateway-worker\src\BusinessWorker.php(380): call_user_func('Events::onConne...', '7f0000010b54000...')
+#2 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Connection\TcpConnection.php(646): GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Events\Select.php(311): Workerman\Connection\TcpConnection->baseRead(Resource id #36)
+#4 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1479): Workerman\Events\Select->loop()
+#5 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1399): Workerman\Worker::forkWorkersForWindows()
+#6 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(560): Workerman\Worker::forkWorkers()
+#7 D:\workspace\php\GatewayWorker\applications\src\start_businessworker.php(35): Workerman\Worker::runAll()
+#8 {main}
+2023-06-28 16:59:48 pid:1 Error: Call to undefined method handle\ChatRoomLobby::getMember() in D:\workspace\php\GatewayWorker\applications\src\Events.php:53
+Stack trace:
+#0 [internal function]: Events::onConnect('7f0000010b54000...')
+#1 D:\workspace\php\GatewayWorker\vendor\workerman\gateway-worker\src\BusinessWorker.php(380): call_user_func('Events::onConne...', '7f0000010b54000...')
+#2 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Connection\TcpConnection.php(646): GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Events\Select.php(311): Workerman\Connection\TcpConnection->baseRead(Resource id #36)
+#4 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1479): Workerman\Events\Select->loop()
+#5 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1399): Workerman\Worker::forkWorkersForWindows()
+#6 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(560): Workerman\Worker::forkWorkers()
+#7 D:\workspace\php\GatewayWorker\applications\src\start_businessworker.php(35): Workerman\Worker::runAll()
+#8 {main}
+2023-06-28 17:02:20 pid:1 Error: Call to undefined method handle\ChatRoomLobby::getMember() in D:\workspace\php\GatewayWorker\applications\src\Events.php:68
+Stack trace:
+#0 [internal function]: Events::onWebSocketConnect('7f0000010b54000...', Array)
+#1 D:\workspace\php\GatewayWorker\vendor\workerman\gateway-worker\src\BusinessWorker.php(396): call_user_func('Events::onWebSo...', '7f0000010b54000...', Array)
+#2 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Connection\TcpConnection.php(646): GatewayWorker\BusinessWorker->onGatewayMessage(Object(Workerman\Connection\AsyncTcpConnection), Array)
+#3 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Events\Select.php(311): Workerman\Connection\TcpConnection->baseRead(Resource id #36)
+#4 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1479): Workerman\Events\Select->loop()
+#5 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(1399): Workerman\Worker::forkWorkersForWindows()
+#6 D:\workspace\php\GatewayWorker\vendor\workerman\workerman\Worker.php(560): Workerman\Worker::forkWorkers()
+#7 D:\workspace\php\GatewayWorker\applications\src\start_businessworker.php(35): Workerman\Worker::runAll()
+#8 {main}
