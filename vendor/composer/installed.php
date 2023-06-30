@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'workerman/gateway-worker-demo',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '3b5606ca2318ff01d59273afc85671c46df708c9',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -98,9 +98,9 @@
             'dev_requirement' => false,
         ),
         'workerman/gateway-worker-demo' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '3b5606ca2318ff01d59273afc85671c46df708c9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

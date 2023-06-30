@@ -16,7 +16,7 @@ class BaseGameRoom implements GameRoom
 
     private $room_id;
 
-    private $timer;
+    private $remote;
 
     /**
      * @param $type
@@ -26,7 +26,7 @@ class BaseGameRoom implements GameRoom
     {
         $this->type = $type;
         $this->room_id = $room_id;
-        $this->checkStartByType();
+//        $this->checkStartByType();
     }
 
     public function getType()
@@ -88,8 +88,10 @@ class BaseGameRoom implements GameRoom
             'member' => $member
         ];
         Gateway::joinGroup($member->getClientId(), $this->room_id);
-        $params = $this->getRoomInfo();
+        echo "[" . $member->getUserId() . "] join room!\n";
+        $params = $this->getRoomInfo($member->getUserId());
         if (!empty($params['data'])) {
+
             // 推送人数
             $join_num = $params['data']['room']['join_num'];
             $qrcode_path = $params['data']['room']['QrCodePath'];
@@ -98,7 +100,9 @@ class BaseGameRoom implements GameRoom
                 [
                     'join_num' => $join_num,
                     'qrcode_path' => $qrcode_path,
-                    'game_type' => $game_type
+                    'game_type' => $game_type,
+                    'join_type' => $params['data']['join_type'],
+                    'sms_player_count' => $this->getPlayerCount()
                 ]
             );
             Gateway::sendToGroup($this->room_id, json_encode($res));
@@ -114,24 +118,26 @@ class BaseGameRoom implements GameRoom
      */
     public function leave($client_id)
     {
-        $this->members[$client_id]['member']->leaveRoom($this->room_id);
+        $item = $this->members[$client_id];
+        $item['member']->leaveRoom($this->room_id);
+        echo "[" . $item['member']->getUserId() . "] leave room!\n";
         unset($this->members[$client_id]);
         Gateway::leaveGroup($client_id, $this->room_id);
-        $params = $this->getRoomInfo();
-        if (!empty($params['data'])) {
-            // 推送人数
-            $join_num = $params['data']['room']['join_num'];
-            $qrcode_path = $params['data']['room']['QrCodePath'];
-            $game_type = $params['data']['room']['game_type'];
-            $res = \handle\message\BaseMessage::getRoomMessage(
-                [
-                    'join_num' => $join_num,
-                    'qrcode_path' => $qrcode_path,
-                    'game_type' => $game_type
-                ]
-            );
-            Gateway::sendToGroup($this->room_id, json_encode($res));
-        }
+//        $params = $this->getRoomInfo();
+//        if (!empty($params['data'])) {
+//            // 推送人数
+//            $join_num = $params['data']['room']['join_num'];
+//            $qrcode_path = $params['data']['room']['QrCodePath'];
+//            $game_type = $params['data']['room']['game_type'];
+//            $res = \handle\message\BaseMessage::getRoomMessage(
+//                [
+//                    'join_num' => $join_num,
+//                    'qrcode_path' => $qrcode_path,
+//                    'game_type' => $game_type
+//                ]
+//            );
+//            Gateway::sendToGroup($this->room_id, json_encode($res));
+//        }
     }
 
     /**
@@ -145,49 +151,52 @@ class BaseGameRoom implements GameRoom
         $this->members[$client_id]['ready'] = true;
     }
 
-    private function checkStartByType()
-    {
-        switch ($this->type) {
-            case GameRoom::ROOM_TYPE_KINGS_FIVE_BY_FIVE:
-                $this->checkStart(10);
-                break;
-            case GameRoom::ROOM_TYPE_KINGS_ONE_BY_ONE:
-                $this->checkStart(2);
-                break;
-            case GameRoom::ROOM_TYPE_CHICKEN:
-                break;
-        }
-    }
+//    /**
+//     * @return void
+//     */
+//    private function checkStartByType()
+//    {
+//        switch ($this->type) {
+//            case GameRoom::ROOM_TYPE_KINGS_FIVE_BY_FIVE:
+//                $this->checkStart(10);
+//                break;
+//            case GameRoom::ROOM_TYPE_KINGS_ONE_BY_ONE:
+//                $this->checkStart(2);
+//                break;
+//            case GameRoom::ROOM_TYPE_CHICKEN:
+//                break;
+//        }
+//    }
 
-    /**
-     * 检查是否全部准备了
-     *
-     * @param $checkCount
-     * @return void
-     */
-    private function checkStart($checkCount)
-    {
-        if ($this->getPlayerCount() >= $checkCount) {
-            if ($this->timer !== null) {
-                Timer::del($this->timer);
-                $this->timer = null;
-            }
-            $this->timer = Timer::add(3, function () {
-                $count = 0;
-                foreach ($this->members as $member) {
-                    if (!$member['ready']) {
-                        $count = $count + 1;
-                        // 推送人数
-//                                Gateway::sendToClient($member['member']->getClientId(), "");
-                    }
-                }
-                if ($count === 0) {
-                    Timer::del($this->timer);
-                    $this->timer = null;
-                }
-            }, null, false);
-        }
-    }
+//    /**
+//     * 检查是否全部准备了
+//     *
+//     * @param $checkCount
+//     * @return void
+//     */
+//    private function checkStart($checkCount)
+//    {
+//        if ($this->getPlayerCount() >= $checkCount) {
+//            if ($this->timer !== null) {
+//                Timer::del($this->timer);
+//                $this->timer = null;
+//            }
+//            $this->timer = Timer::add(3, function () {
+//                $count = 0;
+//                foreach ($this->members as $member) {
+//                    if (!$member['ready']) {
+//                        $count = $count + 1;
+//                        // 推送人数
+////                                Gateway::sendToClient($member['member']->getClientId(), "");
+//                    }
+//                }
+//                if ($count === 0) {
+//                    Timer::del($this->timer);
+//                    $this->timer = null;
+//                }
+//            }, null, false);
+//        }
+//    }
 
     public function getPlayerCount()
     {
@@ -199,9 +208,28 @@ class BaseGameRoom implements GameRoom
      * @return mixed
      * @throws GuzzleException
      */
-    private function getRoomInfo(){
+    private function getRoomInfo($member_id)
+    {
         $http = \handle\util\HttpReprint::getInstance();
         $res = $http->post(Api::MATCH_DETAIL, ['room_id' => $this->room_id]);
-        return json_decode($res, JSON_UNESCAPED_UNICODE);
+        $params = json_decode($res, JSON_UNESCAPED_UNICODE);
+        $join_type = -1;
+        if (!empty($params['data']) && !empty($params['data']['room']['user_participate_game_list'])) {
+            $user_participate_game_list = $params['data']['room']['user_participate_game_list'];
+            foreach ($user_participate_game_list as $key => $value) {
+                foreach ($value as $item) {
+                    if ($item['id'] == $member_id) {
+                        if ($key === "teamblue") {
+                            $join_type = 1;
+                        } else {
+                            $join_type = 2;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        $params['data']['join_type'] = $join_type;
+        return $params;
     }
 }

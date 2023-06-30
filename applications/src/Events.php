@@ -34,33 +34,6 @@ use Workerman\Lib\Timer;
  */
 class Events
 {
-//    public static function onWorkerStart()
-//    {
-//        Timer::add(10, function () {
-//            echo "timer\n";
-//        });
-//    }
-
-    /**
-     * 当客户端连接时触发
-     * 如果业务不需此回调可以删除onConnect
-     *
-     * @param int $client_id 连接id
-     */
-//    public static function onConnect($client_id)
-//    {
-//        $hall = ChatRoomLobby::getInstance();
-//        if (empty($hall->getMember($client_id))) {
-//            $_SESSION['auth_timer_id'] = Timer::add(5, function ($client_id) {
-//                $res = [
-//                    'what' => \handle\message\BaseMessage::MESSAGE_WHAT_RESPONSE,
-//                    'obj' => "链接超时"
-//                ];
-//                Gateway::sendToClient($client_id, json_encode($res));
-//                Gateway::closeClient($client_id);
-//            }, array($client_id), false);
-//        }
-//    }
 
     public static function onWebSocketConnect($client_id, $data)
     {
@@ -93,24 +66,25 @@ class Events
 
         if ($actionMessage->isLogin()) {
             $member = $hall->getMemberByClient($client_id);
-            if (empty($member) || !$member->isOnline()){
+            if (empty($member) || !$member->isOnline()) {
                 $http = \handle\util\HttpReprint::getInstance($actionMessage->getObj());
                 $res = $http->post(Api::CHECK_LOGIN);
                 $params = json_decode($res, JSON_UNESCAPED_UNICODE);
-                if (!empty($member) && (!$member->isOnline() === false)){
+                if (!empty($member) && (!$member->isOnline() === false)) {
                     $member->setClientId($client_id);
-                }else{
+                } else {
                     $hall->addMember(new \handle\member\Member($client_id, $params['data']));
                 }
                 $res = \handle\message\BaseMessage::getResponseMessage("login success");
                 Timer::del($_SESSION['auth_timer_id']);
+                Gateway::bindUid($client_id, $member->getUserId());
                 Gateway::sendToClient($client_id, json_encode($res));
-            }else {
+            } else {
                 $res = \handle\message\BaseMessage::getResponseMessage("login error");
                 Gateway::sendToClient($client_id, json_encode($res));
                 Gateway::closeClient($client_id);
             }
-        }else{
+        } else {
             if ($member = $hall->getMemberByClient($client_id)) {
 
                 switch ($actionMessage->getWhat()) {
@@ -121,7 +95,7 @@ class Events
                         if (is_numeric($actionMessage->getObj())) {
                             $hall->getRoom((int)$actionMessage->getObj())->join($member);
                             $res = \handle\message\BaseMessage::getResponseMessage("join success");
-                        }else{
+                        } else {
                             $res = \handle\message\BaseMessage::getResponseMessage("room ID error");
                         }
                         Gateway::sendToClient($client_id, json_encode($res));
@@ -129,7 +103,11 @@ class Events
                     case \handle\message\BaseMessage::MESSAGE_WHAT_LEAVE_ROOM:
                         if (is_numeric($actionMessage->getObj())) {
                             $hall->getRoom((int)$actionMessage->getObj())->leave($member->getClientId());
+                            $res = \handle\message\BaseMessage::getResponseMessage("leave success");
+                        } else {
+                            $res = \handle\message\BaseMessage::getResponseMessage("room ID error");
                         }
+                        Gateway::sendToClient($client_id, json_encode($res));
                         break;
                     case \handle\message\BaseMessage::MESSAGE_WHAT_ROOM_READY:
                         if (is_numeric($actionMessage->getObj())) {
@@ -162,6 +140,6 @@ class Events
             $member->logout();
         }
 
-        var_dump("[$client_id] client close connect");
+        echo "[$client_id] client close connect!\n";
     }
 }
